@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed Typing Tester</title>
+    <style>
+      body {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-image: linear-gradient(
+          to right,
+          rgba(255, 0, 204, 0.762),
+          rgb(0, 195, 255)
+        );
+      margin: 0;
+      }
+      h1 {
+        color: white;
+        text-transform: uppercase;
+      }
+      #quote {
+        color: white;
+        font-size: 1.5rem;
+        border: 1px solid white;
+        padding: 1rem;
+        margin: 1rem;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.279);
+      }
+      input {
+        width: 50%;
+        border: none;
+box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.279);
+        padding: 1rem;
+      }
+      input:focus{
+        outline: none;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.581);
+      }
+      #result ,#correctText{ 
+        margin: 1rem;
+        text-transform: capitalize;
+        color: white;
+        font-size: 1.5rem;
+        border: 1px solid white;
+        padding: 1rem;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.279);
+      }
+      button{
+        padding: 0.5rem 2vw;
+        font-weight: 550;
+        letter-spacing: 1px ;
+        border-radius: 5px;
+        text-transform: capitalize;
+        color: rgb(35, 35, 35);
+        outline: none;
+        border: none;
+        cursor: pointer;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.337);
+      }
+      button:hover{
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.715);
+  
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>speed Typing tester</h1>
+    <p id="quote">I came, I saw, I conquered.</p>
+    <input
+      type="text"
+      name=""
+      id="input"
+      placeholder="Type the Paragraph Here"
+    />
+    <p id="result">Click Start Button To Test Your Speed</p>
+    <p id="correctText">WrongCharacters = 0</p>
+    <button id="startBtn">Start</button>
+  </body>
+  <script>
+    const quoteElement = document.getElementById("quote");
+    const inputElement = document.getElementById("input");
+    const resultElement = document.getElementById("result");
+    const startBtn = document.getElementById("startBtn");
+    const correctText = document.getElementById("correctText");
+
+    const quotes = [
+      "I have a dream that one day this nation will rise up and live out the true meaning of its creed: 'We hold these truths to be self-evident, that all men are created equal.'",
+      "Ask not what your country can do for you; ask what you can do for your country.",
+      "In the end, it's not the years in your life that count. It's the life in your years.",
+      "The only thing we have to fear is fear itself.",
+      "I came, I saw, I conquered.",
+    ];
+
+    let quote = "";
+    let startTime = new Date().getTime();
+    let endTime = 0;
+    let timeElapsed = 0;
+    let correctCharaacters = 0;
+    let wrongCharacters = 0;
+
+    function renderQuote() {
+      quote = quotes[Math.floor(Math.random() * quotes.length)];
+      quoteElement.textContent = quote;
+    }
+
+    function handleInput() {
+      const inputValue = inputElement.value;
+      const quoteChar = quote.split("");
+      const inputChar = inputValue.split("");
+      correctCharaacters = 0;
+      wrongCharacters = 0;
+      inputChar.forEach((char, index) => {
+        if (char === quoteChar[index]) {
+          correctCharaacters++;
+        } else {
+          wrongCharacters++;
+          console.log(correctCharaacters);
+          correctText.textContent =`WrongCharacters = ${wrongCharacters}`;
+        }
+      });
+      
+      endTime = new Date().getTime();
+      console.log(endTime);
+      timeElapsed = (endTime - startTime) / 1000;
+      
+      const wpm = Math.round(correctCharaacters / 5 / (timeElapsed / 60));
+      console.log(wpm);
+      startBtn.textContent = "Restart";
+      resultElement.textContent = `You typed the quote correctly in ${timeElapsed} seconds. Your typing speed is ${wpm} WPM.`;
+      console.log(timeElapsed);
+    }
+
+    function startQuots() {
+      renderQuote();
+      inputElement.value = "";
+      inputElement.focus();
+      resultElement.textContent = "Click Start Button To Test Your Speed";
+      correctText.textContent = "WrongCharacters = 0";
+      startBtn.textContent = "Start";
+      startTime = new Date().getTime();
+      
+    }
+    
+    startBtn.addEventListener("click", startQuots);
+    inputElement.addEventListener("input", handleInput);
+  </script>
+</html>
